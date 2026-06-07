@@ -1,0 +1,159 @@
+{
+  "common": {
+    "siteName": "Jisu Scores",
+    "live": "Live",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "tomorrow": "Tomorrow",
+    "search": "Search",
+    "searchPlaceholder": "Search teams, players, leagues...",
+    "loading": "Loading...",
+    "noResults": "No results found",
+    "viewAll": "View All",
+    "home": "Home",
+    "standings": "Standings",
+    "fixtures": "Fixtures",
+    "statistics": "Statistics",
+    "news": "News",
+    "predictions": "Analysis",
+    "ads": "Ads",
+    "teams": "Teams",
+    "players": "Players",
+    "h2h": "Head to Head",
+    "events": "Events",
+    "lineups": "Lineups",
+    "followTelegram": "Follow on Telegram",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "language": "Language",
+    "finished": "Finished",
+    "scheduled": "Scheduled",
+    "vs": "vs",
+    "retry": "Retry"
+  },
+  "nav": {
+    "liveScores": "Live Scores",
+    "leagues": "Leagues",
+    "news": "News",
+    "predictions": "Analysis",
+    "search": "Search"
+  },
+  "home": {
+    "title": "Live Football Scores & Results",
+    "description": "Real-time football scores, fixtures, standings, and statistics from top leagues worldwide.",
+    "liveNow": "Live Now",
+    "topLeagues": "Top Leagues",
+    "latestNews": "Latest News",
+    "featuredPredictions": "Match Analysis",
+    "filterLive": "Live Now",
+    "filterByTime": "By Date",
+    "noLiveMatches": "No live matches at the moment",
+    "noMatches": "No matches on this date",
+    "featuredMatches": "Featured Matches"
+  },
+  "live": {
+    "title": "Live Football Scores",
+    "description": "Follow live football matches with real-time score updates and match events.",
+    "noLive": "No live matches at the moment"
+  },
+  "match": {
+    "title": "{home} vs {away}",
+    "description": "Live score, statistics, events and lineups for {home} vs {away}.",
+    "overview": "Overview",
+    "stats": "Statistics",
+    "timeline": "Events",
+    "commentary": "Commentary",
+    "commentaryLabels": {
+      "title": "Live Commentary",
+      "live": "Live",
+      "updating": "Updating…",
+      "empty": "No commentary available",
+      "goal": "Goal",
+      "yellowCard": "Yellow Card",
+      "redCard": "Red Card",
+      "substitution": "Substitution",
+      "var": "VAR",
+      "assist": "Assist",
+      "in": "In",
+      "out": "Out"
+    }
+  },
+  "standings": {
+    "title": "{league} Standings",
+    "description": "Current {league} league table, standings and form guide.",
+    "pos": "Pos",
+    "team": "Team",
+    "played": "P",
+    "won": "W",
+    "drawn": "D",
+    "lost": "L",
+    "gd": "GD",
+    "points": "Pts",
+    "form": "Form"
+  },
+  "fixtures": {
+    "title": "{league} Fixtures",
+    "description": "Upcoming and past {league} fixtures and results."
+  },
+  "team": {
+    "title": "{team}",
+    "description": "Fixtures, results, statistics and squad information for {team}.",
+    "recentResults": "Recent Results",
+    "upcomingFixtures": "Upcoming Fixtures"
+  },
+  "player": {
+    "title": "{player}",
+    "description": "Season statistics and career performance for {player}.",
+    "seasonStats": "Season Stats"
+  },
+  "news": {
+    "title": "Football News",
+    "description": "Latest football news, transfer updates and match reports."
+  },
+  "predictions": {
+    "title": "Match Analysis",
+    "description": "Expert match previews, tactical analysis and predictions.",
+    "confidence": "Confidence",
+    "pick": "Pick"
+  },
+  "search": {
+    "title": "Search",
+    "description": "Search teams, players, leagues and matches.",
+    "teams": "Teams",
+    "players": "Players"
+  },
+  "sidebar": {
+    "hotLeagues": "Top Leagues",
+    "quickLinks": "Quick Links",
+    "telegramTip": "Follow for live score alerts",
+    "predictionsTip": "View match analysis"
+  },
+  "admin": {
+    "title": "Admin",
+    "ads": "Ads",
+    "articles": "Articles",
+    "settings": "Settings",
+    "telegram": "Telegram",
+    "overview": "Overview",
+    "news": "News",
+    "predictions": "Analysis"
+  },
+  "ads": {
+    "title": "Advertisements",
+    "description": "Sponsored content and partner promotions.",
+    "empty": "No ads available"
+  },
+  "footer": {
+    "description": "Professional live football scores, fixtures, standings and match data.",
+    "copyright": "All rights reserved"
+  },
+  "matchLabels": {
+    "referee": "Referee",
+    "venue": "Venue",
+    "date": "Kick-off",
+    "back": "Back",
+    "noEvents": "No match events",
+    "noStats": "No statistics available",
+    "seasonStats": "Season Stats"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "ads": [
+    {
+      "id": "ad-sidebar-1",
+      "name": "侧边栏推广",
+      "position": "sidebar-top",
+      "title": "关注 Telegram 频道",
+      "htmlCode": "",
+      "imageUrl": "",
+      "linkUrl": "https://t.me/hga050h_com",
+      "active": true,
+      "priority": 10,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "updatedAt": "2025-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "ad-mobile-1",
+      "name": "手机横幅",
+      "position": "mobile-banner",
+      "title": "即时比分推送",
+      "htmlCode": "<div style=\"padding:12px;text-align:center;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border-radius:8px;\"><strong>⚽ 关注 Telegram</strong><br/><span style=\"font-size:13px;opacity:0.9\">获取即时比分与赛果推送</span></div>",
+      "imageUrl": "",
+      "linkUrl": "https://t.me/hga050h_com",
+      "active": true,
+      "priority": 10,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "updatedAt": "2025-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "ad-home-1",
+      "name": "首页横幅",
+      "position": "homepage-banner",
+      "title": "专业足球数据",
+      "htmlCode": "<div style=\"padding:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;text-align:center;\"><strong style=\"color:#166534\">📊 专业足球即时比分</strong><p style=\"margin:8px 0 0;font-size:13px;color:#15803d\">赛程 · 积分榜 · 技术统计 · 赛前分析</p></div>",
+      "imageUrl": "",
+      "linkUrl": "",
+      "active": true,
+      "priority": 5,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "updatedAt": "2025-01-01T00:00:00.000Z"
+    }
+  ],
+  "news": [
+    {
+      "id": "news-1",
+      "slug": "premier-league-title-race",
+      "titleZh": "英超争冠形势：五场定乾坤",
+      "excerptZh": "剩余五轮联赛，积分榜前三球队争冠走势全解析。",
+      "contentZh": "随着赛季进入最后五轮，英超争冠已进入白热化阶段。\n\n目前积分榜前三的球队分差仅在个位数，每一场比赛的结果都可能改变最终走势。从近期状态来看，各队进攻火力与防守稳定性将成为决定冠军归属的关键因素。\n\n接下来我们将从赛程难度、伤病情况、主客场优势等维度，为您全面解读争冠形势。",
+      "coverImage": "",
+      "published": true,
+      "publishedAt": "2025-05-30T08:00:00.000Z",
+      "createdAt": "2025-05-30T08:00:00.000Z",
+      "updatedAt": "2025-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "news-2",
+      "slug": "champions-league-semi-finals",
+      "titleZh": "欧冠半决赛前瞻",
+      "excerptZh": "四支豪门即将对决，谁能晋级决赛？",
+      "contentZh": "欧冠半决赛即将打响，四支欧洲顶级豪门将展开两回合较量。\n\n从战术层面分析，各队在控球率、高位逼抢和反击效率上各有特点。半决赛往往更加谨慎，细节处理与定位球将成为破局关键。\n\n敬请关注我们的后续报道，获取最新阵容与伤病信息。",
+      "coverImage": "",
+      "published": true,
+      "publishedAt": "2025-05-29T08:00:00.000Z",
+      "createdAt": "2025-05-29T08:00:00.000Z",
+      "updatedAt": "2025-05-29T08:00:00.000Z"
+    }
+  ],
+  "predictions": [
+    {
+      "id": "pred-1",
+      "slug": "city-vs-arsenal-preview",
+      "titleZh": "曼城 vs 阿森纳 赛前分析",
+      "excerptZh": "英超争冠关键战，两队战术风格与近期状态深度解读。",
+      "contentZh": "本场比赛是本赛季英超争冠的天王山之战。\n\n曼城主场作战，控球与渗透能力出色；阿森纳反击速度快，边路突破是其主要得分手段。从历史交锋来看，双方近五次交手各有胜负，难分伯仲。\n\n综合考虑近期状态与主客场因素，主队略占上风，但比赛悬念十足。",
+      "coverImage": "",
+      "confidence": 72,
+      "prediction": "主队小胜",
+      "matchId": null,
+      "published": true,
+      "publishedAt": "2025-05-30T10:00:00.000Z",
+      "createdAt": "2025-05-30T10:00:00.000Z",
+      "updatedAt": "2025-05-30T10:00:00.000Z"
+    },
+    {
+      "id": "pred-2",
+      "slug": "el-clasico-preview",
+      "titleZh": "国家德比前瞻：皇马 vs 巴萨",
+      "excerptZh": "西甲焦点大战，进攻火力与中场控制将成为胜负关键。",
+      "contentZh": "国家德比永远是世界足坛最受瞩目的比赛之一。\n\n皇马近期进攻效率稳定，维尼修斯与贝林厄姆状态火热；巴萨则依靠年轻球员的活力在中场占据主动。\n\n预计双方都会采取积极进攻策略，比赛进球数可能较多。",
+      "coverImage": "",
+      "confidence": 65,
+      "prediction": "双方均有进球",
+      "matchId": null,
+      "published": true,
+      "publishedAt": "2025-05-29T10:00:00.000Z",
+      "createdAt": "2025-05-29T10:00:00.000Z",
+      "updatedAt": "2025-05-29T10:00:00.000Z"
+    }
+  ],
+  "settings": {
+    "siteName": "极速比分",
+    "telegramUrl": "https://t.me/hga050h_com",
+    "siteDescription": "专业的足球即时比分平台，提供赛程、积分榜与比赛数据。"
+  }
+}

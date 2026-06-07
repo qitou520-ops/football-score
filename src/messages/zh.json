@@ -1,0 +1,159 @@
+{
+  "common": {
+    "siteName": "极速比分",
+    "live": "直播",
+    "today": "今天",
+    "yesterday": "昨天",
+    "tomorrow": "明天",
+    "search": "搜索",
+    "searchPlaceholder": "搜索球队、球员、联赛...",
+    "loading": "加载中...",
+    "noResults": "未找到结果",
+    "viewAll": "查看全部",
+    "home": "首页",
+    "standings": "积分榜",
+    "fixtures": "赛程",
+    "statistics": "统计",
+    "news": "新闻",
+    "predictions": "赛前分析",
+    "ads": "广告",
+    "teams": "球队",
+    "players": "球员",
+    "h2h": "交锋记录",
+    "events": "事件",
+    "lineups": "阵容",
+    "followTelegram": "关注 Telegram",
+    "darkMode": "深色模式",
+    "lightMode": "浅色模式",
+    "finished": "已结束",
+    "scheduled": "未开始",
+    "vs": "对阵",
+    "retry": "重试",
+    "language": "语言"
+  },
+  "nav": {
+    "liveScores": "即时比分",
+    "leagues": "联赛",
+    "news": "新闻",
+    "predictions": "赛前分析",
+    "search": "搜索"
+  },
+  "home": {
+    "title": "足球即时比分与赛果",
+    "description": "全球顶级足球联赛实时比分、赛程、积分榜和比赛统计数据。",
+    "liveNow": "正在直播",
+    "topLeagues": "顶级联赛",
+    "latestNews": "最新资讯",
+    "featuredPredictions": "赛前分析",
+    "filterLive": "正在进行",
+    "filterByTime": "按时间",
+    "noLiveMatches": "当前暂无进行中的比赛",
+    "noMatches": "该日期暂无比赛",
+    "featuredMatches": "热门比赛"
+  },
+  "live": {
+    "title": "足球即时比分",
+    "description": "实时关注全球足球比赛，获取即时比分与比赛动态。",
+    "noLive": "当前暂无进行中的比赛"
+  },
+  "match": {
+    "title": "{home} vs {away}",
+    "description": "{home} 对阵 {away} 的即时比分、技术统计、比赛事件和阵容信息。",
+    "overview": "概览",
+    "stats": "技术统计",
+    "timeline": "比赛事件",
+    "commentary": "文字直播",
+    "commentaryLabels": {
+      "title": "文字直播",
+      "live": "进行中",
+      "updating": "更新中…",
+      "empty": "暂无文字直播",
+      "goal": "进球",
+      "yellowCard": "黄牌",
+      "redCard": "红牌",
+      "substitution": "换人",
+      "var": "VAR",
+      "assist": "助攻",
+      "in": "换上",
+      "out": "换下"
+    }
+  },
+  "standings": {
+    "title": "{league} 积分榜",
+    "description": "{league} 最新联赛积分榜与球队近期走势。",
+    "pos": "排名",
+    "team": "球队",
+    "played": "场次",
+    "won": "胜",
+    "drawn": "平",
+    "lost": "负",
+    "gd": "净胜球",
+    "points": "积分",
+    "form": "近况"
+  },
+  "fixtures": {
+    "title": "{league} 赛程",
+    "description": "{league} 近期赛程与比赛结果。"
+  },
+  "team": {
+    "title": "{team}",
+    "description": "{team} 最新赛程、比赛结果、球队统计与阵容。",
+    "recentResults": "近期赛果",
+    "upcomingFixtures": "即将进行的赛程"
+  },
+  "player": {
+    "title": "{player}",
+    "description": "{player} 本赛季数据统计与职业生涯表现。",
+    "seasonStats": "赛季数据"
+  },
+  "news": {
+    "title": "足球资讯",
+    "description": "最新足球新闻、转会动态与赛事报道。"
+  },
+  "predictions": {
+    "title": "赛前分析",
+    "description": "专业赛事前瞻、战术分析与比赛预测。",
+    "confidence": "参考指数",
+    "pick": "分析倾向"
+  },
+  "search": {
+    "title": "搜索",
+    "description": "搜索球队、球员、联赛和比赛。",
+    "teams": "球队",
+    "players": "球员"
+  },
+  "sidebar": {
+    "hotLeagues": "顶级联赛",
+    "quickLinks": "快捷入口",
+    "telegramTip": "关注频道，获取即时比分推送",
+    "predictionsTip": "查看专业赛事前瞻"
+  },
+  "admin": {
+    "title": "管理后台",
+    "ads": "广告管理",
+    "articles": "文章管理",
+    "settings": "系统设置",
+    "telegram": "Telegram 配置",
+    "overview": "概览",
+    "news": "新闻管理",
+    "predictions": "赛前分析"
+  },
+  "ads": {
+    "title": "广告展示",
+    "description": "本站合作推广与自定义广告内容。",
+    "empty": "暂无广告内容"
+  },
+  "footer": {
+    "description": "专业的足球即时比分平台，提供赛程、积分榜与比赛数据。",
+    "copyright": "保留所有权利"
+  },
+  "matchLabels": {
+    "referee": "主裁判",
+    "venue": "比赛场地",
+    "date": "比赛时间",
+    "back": "返回",
+    "noEvents": "暂无比赛事件",
+    "noStats": "暂无技术统计",
+    "seasonStats": "赛季数据"
+  }
+}
