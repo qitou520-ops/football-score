@@ -11,7 +11,7 @@ type Props = { params: Promise<{ locale: string; slug: string }> };
 export async function generateMetadata({ params }: Props) {
   const { slug, locale } = await params;
   setRequestLocale(locale);
-  const article = await getPredictionBySlug(slug);
+  const article = await getPredictionBySlug(slug, locale);
   if (!article) return {};
   return buildMetadata({
     title: article.title,
@@ -27,7 +27,7 @@ export default async function PredictionArticlePage({ params }: Props) {
   const t = await getTranslations("predictions");
   const tm = await getTranslations("matchLabels");
 
-  const article = await getPredictionBySlug(slug);
+  const article = await getPredictionBySlug(slug, locale);
   if (!article) notFound();
 
   return (

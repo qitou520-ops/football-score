@@ -20,6 +20,9 @@ export {
 
 export { getPlayerById, searchPlayers } from "./players";
 export { getCommentaryByMatchId } from "./commentary";
+export { getLeagueTeamsList, getLeagueTopScorersList } from "./league-meta";
+export { getChatMessages, addChatMessage } from "@/lib/chat";
+export type { ChatMessageItem, ChatMessagesResponse } from "@/lib/chat/types";
 
 export {
   getNews,
@@ -46,6 +49,8 @@ export type {
   MatchStatistic,
   TeamDetail,
   H2HMatch,
+  LeagueTeamItem,
+  LeagueTopScorer,
   Player,
   PlayerProfile,
   PlayerSeasonStats,

@@ -9,12 +9,22 @@ import { useLocale, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { ds } from "@/lib/design";
 import type { Fixture } from "@/lib/api-football/types";
-import { groupFixturesByLeague, sortLiveFirst } from "@/lib/match/group-fixtures";
-import { translateLeagueName } from "@/lib/translations";
+import {
+  groupFixturesByLeague,
+  sortLeagueGroupsByPriority,
+  sortLiveFirst,
+} from "@/lib/match/group-fixtures";
+import {
+  WORLD_CUP_LEAGUE_ID,
+  LEAGUE_PRIORITY_IDS,
+  getLeagueById,
+} from "@/lib/api-football/constants";
+import { translateLeagueName } from "@/lib/translations/client";
 import { MatchCard } from "./match-card";
 import { Link } from "@/i18n/navigation";
 import { MatchListSkeleton } from "@/components/ui/skeleton";
 import { InlineAd } from "@/components/ads/inline-ad";
+import { RemoteImage } from "@/components/ui/remote-image";
 
 type FilterMode = "live" | "time";
 
@@ -26,37 +36,59 @@ interface ApiFixturesResponse {
 async function fetchFixtures(url: string): Promise<ApiFixturesResponse> {
   const res = await fetch(url);
   const json = (await res.json()) as ApiFixturesResponse;
-  if (!res.ok || json.error) {
-    throw new Error(json.error || "加载失败");
+  if (!res.ok) {
+    return { fixtures: [], error: json.error || "加载失败" };
   }
-  return json;
+  return { fixtures: json.fixtures ?? [], error: json.error };
 }
 
 interface MatchFeedProps {
   initialDate: string;
   showFilters?: boolean;
   featuredFixtures?: Fixture[];
+  initialFixtures?: Fixture[];
+  defaultFilter?: FilterMode;
 }
 
-export function MatchFeed({ initialDate, showFilters = true, featuredFixtures = [] }: MatchFeedProps) {
+export function MatchFeed({
+  initialDate,
+  showFilters = true,
+  featuredFixtures = [],
+  initialFixtures = [],
+  defaultFilter = "time",
+}: MatchFeedProps) {
   const locale = useLocale();
   const t = useTranslations("home");
   const tc = useTranslations("common");
   const [date, setDate] = useState(initialDate);
-  const [filter, setFilter] = useState<FilterMode>("time");
+  const [filter, setFilter] = useState<FilterMode>(defaultFilter);
 
   const url =
     filter === "live"
-      ? "/api/fixtures/live"
-      : `/api/fixtures/date?date=${date}`;
+      ? `/api/fixtures/live?locale=${locale}`
+      : `/api/fixtures/date?date=${date}&locale=${locale}`;
+
+  const fallbackData =
+    filter === "time" && date === initialDate && initialFixtures.length > 0
+      ? { fixtures: initialFixtures }
+      : undefined;
 
   const { data, error, isLoading, mutate } = useSWR<ApiFixturesResponse>(url, fetchFixtures, {
+    fallbackData,
     refreshInterval: filter === "live" ? 30000 : 0,
-    revalidateOnFocus: true,
+    revalidateOnFocus: filter === "live",
+    dedupingInterval: 5000,
   });
 
   const fixtures = sortLiveFirst(data?.fixtures ?? []);
-  const groups = groupFixturesByLeague(fixtures);
+  const showInitialSkeleton = isLoading && !data && !fallbackData;
+  const groups = sortLeagueGroupsByPriority(
+    groupFixturesByLeague(fixtures),
+    LEAGUE_PRIORITY_IDS
+  );
+  const worldCupFixtures = fixtures.filter((f) => f.league.id === WORLD_CUP_LEAGUE_ID);
+  const otherGroups = groups.filter((g) => g.league.id !== WORLD_CUP_LEAGUE_ID);
+  const worldCupLeague = getLeagueById(WORLD_CUP_LEAGUE_ID);
 
   const dateLabel = (() => {
     const d = parseISO(date);
@@ -114,7 +146,7 @@ export function MatchFeed({ initialDate, showFilters = true, featuredFixtures = 
         </>
       )}
 
-      {isLoading ? (
+      {showInitialSkeleton ? (
         <div className={ds.panel}>
           <MatchListSkeleton rows={6} />
         </div>
@@ -131,7 +163,14 @@ export function MatchFeed({ initialDate, showFilters = true, featuredFixtures = 
             {tc("retry")}
           </button>
         </div>
-      ) : fixtures.length === 0 ? (
+      ) : fixtures.length === 0 && data?.error ? (
+        <div className={cn(ds.card, "py-16 text-center")}>
+          <p className="text-sm text-muted-foreground mb-3">
+            {filter === "live" ? t("noLiveMatches") : t("noMatches")}
+          </p>
+          <p className="text-xs text-muted-foreground">{data.error}</p>
+        </div>
+      ) : fixtures.length === 0 && !showFilters ? (
         <div className={cn(ds.card, "py-16 text-center")}>
           <p className="text-sm text-muted-foreground">
             {filter === "live" ? t("noLiveMatches") : t("noMatches")}
@@ -151,31 +190,69 @@ export function MatchFeed({ initialDate, showFilters = true, featuredFixtures = 
               </div>
             </section>
           )}
-          {groups.map(({ league, fixtures: leagueFixtures }, index) => (
-            <section key={league.id} className={ds.panel}>
-              <Link
-                href={`/league/${league.id}/standings`}
-                prefetch
-                className="flex items-center gap-2.5 px-4 py-3 bg-muted/50 hover:bg-muted transition-colors border-b border-border"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={league.logo} alt="" className="h-5 w-5 object-contain" />
-                <span className={ds.sectionTitle + " flex-1 truncate"}>
-                  {translateLeagueName(league.id, league.name)}
-                </span>
-                <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
-              </Link>
-              <div>
-                {leagueFixtures.map((fixture) => (
-                  <MatchCard key={fixture.fixture.id} fixture={fixture} />
-                ))}
-              </div>
-              {index === 0 && <InlineAd position="match-list-middle" />}
-            </section>
-          ))}
+          {showFilters && worldCupLeague && worldCupFixtures.length > 0 && (
+            <LeagueFixtureSection
+              league={worldCupLeague}
+              fixtures={worldCupFixtures}
+            />
+          )}
+          {otherGroups.length > 0
+            ? otherGroups.map(({ league, fixtures: leagueFixtures }, index) => (
+                <LeagueFixtureSection
+                  key={league.id}
+                  league={league}
+                  fixtures={leagueFixtures}
+                  footer={index === 0 ? <InlineAd position="match-list-middle" /> : undefined}
+                />
+              ))
+            : !showFilters ? (
+                <div className={cn(ds.card, "py-16 text-center")}>
+                  <p className="text-sm text-muted-foreground">
+                    {filter === "live" ? t("noLiveMatches") : t("noMatches")}
+                  </p>
+                </div>
+              ) : null}
         </div>
       )}
     </div>
+  );
+}
+
+function LeagueFixtureSection({
+  league,
+  fixtures,
+  emptyText,
+  footer,
+}: {
+  league: { id: number; name: string; logo: string; country?: string };
+  fixtures: Fixture[];
+  emptyText?: string;
+  footer?: React.ReactNode;
+}) {
+  return (
+    <section className={ds.panel}>
+      <Link
+        href={`/league/${league.id}/fixtures`}
+        prefetch
+        className="flex items-center gap-2.5 px-4 py-3 bg-muted/50 hover:bg-muted transition-colors border-b border-border"
+      >
+        <RemoteImage src={league.logo} alt="" width={20} height={20} className="h-5 w-5" />
+        <span className={ds.sectionTitle + " flex-1 truncate"}>
+          {translateLeagueName(league.id, league.name, league.country)}
+        </span>
+        <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+      </Link>
+      {fixtures.length === 0 && emptyText ? (
+        <p className="text-sm text-muted-foreground p-6 text-center">{emptyText}</p>
+      ) : (
+        <div>
+          {fixtures.map((fixture) => (
+            <MatchCard key={fixture.fixture.id} fixture={fixture} />
+          ))}
+        </div>
+      )}
+      {footer}
+    </section>
   );
 }
 

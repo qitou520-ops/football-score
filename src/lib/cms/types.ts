@@ -35,8 +35,11 @@ export interface NewsItem {
   id: string;
   slug: string;
   titleZh: string;
+  titleEn?: string;
   excerptZh: string;
+  excerptEn?: string;
   contentZh: string;
+  contentEn?: string;
   coverImage: string;
   seoTitle: string;
   seoDescription: string;
@@ -50,8 +53,11 @@ export interface PredictionItem {
   id: string;
   slug: string;
   titleZh: string;
+  titleEn?: string;
   excerptZh: string;
+  excerptEn?: string;
   contentZh: string;
+  contentEn?: string;
   coverImage: string;
   confidence: number;
   prediction: string;
@@ -75,6 +81,19 @@ export interface SiteSettings {
   siteName: string;
   telegramUrl: string;
   siteDescription: string;
+  partnerUrl: string;
+}
+
+export interface AffiliateLinkItem {
+  id: string;
+  name: string;
+  slug: string;
+  destination: string;
+  partner: string;
+  active: boolean;
+  clicks: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CmsData {
@@ -82,13 +101,15 @@ export interface CmsData {
   news: NewsItem[];
   predictions: PredictionItem[];
   featuredMatches: FeaturedMatchItem[];
+  affiliateLinks: AffiliateLinkItem[];
   settings: SiteSettings;
 }
 
 export const DEFAULT_SETTINGS: SiteSettings = {
   siteName: "极速比分",
-  telegramUrl: "https://t.me/hga050h_com",
+  telegramUrl: "",
   siteDescription: "专业的足球即时比分平台",
+  partnerUrl: "https://hga050h.com",
 };
 
 export function slugify(text: string): string {

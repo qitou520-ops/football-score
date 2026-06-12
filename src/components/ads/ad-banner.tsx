@@ -1,4 +1,5 @@
 import { getAds } from "@/lib/cms";
+import { sanitizeAdHtml } from "@/lib/sanitize/ad-html";
 import { cn } from "@/lib/utils";
 import { ds } from "@/lib/design";
 import type { AdPosition } from "@/lib/cms/types";
@@ -43,13 +44,22 @@ function AdContent({
   imageUrl: string;
   linkUrl: string;
 }) {
-  if (htmlCode) {
-    return (
+  const safeHtml = htmlCode ? sanitizeAdHtml(htmlCode) : "";
+  if (safeHtml) {
+    const inner = (
       <div
         className="p-3 text-sm [&_img]:max-w-full [&_a]:text-primary"
-        dangerouslySetInnerHTML={{ __html: htmlCode }}
+        dangerouslySetInnerHTML={{ __html: safeHtml }}
       />
     );
+    if (linkUrl) {
+      return (
+        <a href={linkUrl} target="_blank" rel="noopener noreferrer sponsored" className="block hover:opacity-95 transition-opacity">
+          {inner}
+        </a>
+      );
+    }
+    return inner;
   }
 
   if (imageUrl) {

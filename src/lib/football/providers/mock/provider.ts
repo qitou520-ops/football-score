@@ -11,6 +11,8 @@ import type {
   FixtureLineup,
   PlayerProfile,
   PlayerSearchResult,
+  LeagueTeamItem,
+  LeagueTopScorer,
 } from "@/lib/football/types";
 import { adaptMockPlayer } from "./adapter";
 
@@ -104,5 +106,15 @@ export class MockFootballProvider implements FootballDataProvider {
 
   async getStandings(leagueId: number): Promise<StandingRow[][]> {
     return (await this.fixtures()).getStandings(leagueId);
+  }
+
+  async getLeagueTeams(leagueId: number): Promise<LeagueTeamItem[]> {
+    const meta = await import("@/lib/mock/league-meta");
+    return meta.getLeagueTeams(leagueId);
+  }
+
+  async getLeagueTopScorers(leagueId: number): Promise<LeagueTopScorer[]> {
+    const meta = await import("@/lib/mock/league-meta");
+    return meta.getLeagueTopScorers(leagueId);
   }
 }

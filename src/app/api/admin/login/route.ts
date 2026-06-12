@@ -1,17 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { prisma } from "@/lib/db/prisma";
 import { shouldUseDatabase } from "@/lib/db/is-enabled";
 import { loginSchema } from "@/lib/admin/validation";
-
-async function issueToken(sub: string, email: string, role = "admin") {
-  return jwt.sign(
-    { sub, email, role },
-    process.env.JWT_SECRET || "dev-secret",
-    { expiresIn: "7d" }
-  );
-}
+import { signAdminToken } from "@/lib/admin/auth";
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,13 +15,18 @@ export async function POST(request: NextRequest) {
     if (shouldUseDatabase()) {
       const user = await prisma.adminUser.findUnique({ where: { email } });
       if (user && (await bcrypt.compare(password, user.passwordHash))) {
-        token = await issueToken(user.id, user.email, user.role);
+        token = signAdminToken(user.id, user.email, user.role);
       }
     } else {
-      const adminEmail = process.env.ADMIN_EMAIL || "admin@football.com";
-      const adminPass = process.env.ADMIN_PASSWORD || "admin123";
-      if (email === adminEmail && password === adminPass) {
-        token = await issueToken("dev-admin", email);
+      const adminEmail = process.env.ADMIN_EMAIL;
+      const adminPass = process.env.ADMIN_PASSWORD;
+      if (
+        adminEmail &&
+        adminPass &&
+        email === adminEmail &&
+        password === adminPass
+      ) {
+        token = signAdminToken("dev-admin", email);
       }
     }
 

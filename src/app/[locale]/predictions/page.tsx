@@ -21,7 +21,7 @@ export default async function PredictionsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("predictions");
-  const predictions = await getPredictions();
+  const predictions = await getPredictions(locale);
 
   return (
     <PageShell showLeagues={false}>

@@ -6,7 +6,8 @@ import { cn, formatMatchCardStatusLabel, isLiveStatus } from "@/lib/utils";
 import { ds } from "@/lib/design";
 import type { Fixture } from "@/lib/api-football/types";
 import { useLocale, useTranslations } from "next-intl";
-import { translateTeamName } from "@/lib/translations";
+import { translateTeamName } from "@/lib/translations/client";
+import { RemoteImage } from "@/components/ui/remote-image";
 
 interface MatchCardProps {
   fixture: Fixture;
@@ -81,8 +82,14 @@ function TeamCell({
 }) {
   return (
     <div className={cn("flex items-center gap-1.5 min-w-0", align === "right" && "flex-row-reverse")}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={logo} alt="" className="h-5 w-5 sm:h-6 sm:w-6 object-contain shrink-0" />
+      <RemoteImage
+        src={logo}
+        alt=""
+        width={24}
+        height={24}
+        className="h-5 w-5 sm:h-6 sm:w-6"
+        sizes="24px"
+      />
       <span className={cn(
         "text-xs sm:text-sm truncate",
         align === "right" ? "text-right" : "text-left",

@@ -2,6 +2,7 @@
 
 import useSWR from "swr";
 import { ds } from "@/lib/design";
+import { sanitizeAdHtml } from "@/lib/sanitize/ad-html";
 
 interface AdItem {
   id: string;
@@ -19,11 +20,12 @@ export function InlineAd({ position }: { position: string }) {
   const ad = data?.[0];
   if (!ad) return null;
 
-  if (ad.htmlCode) {
+  const safeHtml = ad.htmlCode ? sanitizeAdHtml(ad.htmlCode) : "";
+  if (safeHtml) {
     return (
       <div
         className={ds.panel + " p-3"}
-        dangerouslySetInnerHTML={{ __html: ad.htmlCode }}
+        dangerouslySetInnerHTML={{ __html: safeHtml }}
       />
     );
   }

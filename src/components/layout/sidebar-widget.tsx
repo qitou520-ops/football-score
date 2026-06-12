@@ -1,18 +1,16 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getSettings } from "@/lib/cms";
 import { getNews, getPredictions } from "@/lib/data";
-import { ChevronRight, Newspaper, TrendingUp, Send } from "lucide-react";
+import { ChevronRight, Newspaper, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ds } from "@/lib/design";
 
 export async function SidebarWidget() {
+  const locale = await getLocale();
   const t = await getTranslations("sidebar");
   const th = await getTranslations("home");
-  const settings = await getSettings();
-  const news = await getNews();
-  const predictions = await getPredictions();
-  const telegramUrl = settings.telegramUrl || "https://t.me/hga050h_com";
+  const news = await getNews(locale);
+  const predictions = await getPredictions(locale);
 
   return (
     <div className={ds.stackSm}>
@@ -79,21 +77,6 @@ export async function SidebarWidget() {
           </ul>
         </div>
       )}
-
-      <a
-        href={telegramUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={cn(ds.panel, "hover:opacity-95 transition-opacity")}
-      >
-        <div className="bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700 px-4 py-5 text-white">
-          <div className="flex items-center gap-2 mb-1">
-            <Send className="h-4 w-4" />
-            <span className="text-sm font-bold">Telegram</span>
-          </div>
-          <p className="text-xs opacity-90 leading-relaxed">{t("telegramTip")}</p>
-        </div>
-      </a>
     </div>
   );
 }

@@ -6,11 +6,15 @@ import { Radio, Newspaper, TrendingUp, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ds } from "@/lib/design";
 
-const TABS = [
-  { href: "/", icon: Radio, label: "比赛" },
-  { href: "/news", icon: Newspaper, navKey: "news" as const },
-  { href: "/predictions", icon: TrendingUp, navKey: "predictions" as const },
-  { href: "/search", icon: Search, navKey: "search" as const },
+const TABS: {
+  href: string;
+  icon: typeof Radio;
+  navKey: "liveScores" | "news" | "predictions" | "search";
+}[] = [
+  { href: "/", icon: Radio, navKey: "liveScores" },
+  { href: "/news", icon: Newspaper, navKey: "news" },
+  { href: "/predictions", icon: TrendingUp, navKey: "predictions" },
+  { href: "/search", icon: Search, navKey: "search" },
 ];
 
 export function MobileBottomNav() {
@@ -30,9 +34,9 @@ export function MobileBottomNav() {
       aria-label="主导航"
     >
       <div className="flex items-stretch h-14">
-        {TABS.map(({ href, icon: Icon, label, navKey }) => {
+        {TABS.map(({ href, icon: Icon, navKey }) => {
           const active = isActive(href);
-          const tabLabel = label ?? t(navKey!);
+          const tabLabel = t(navKey);
 
           return (
             <Link

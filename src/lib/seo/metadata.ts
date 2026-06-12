@@ -23,23 +23,25 @@ export function buildMetadata({
   const url = `${SITE_URL}${path}`;
   const ogImage = image || `${SITE_URL}/og-default.png`;
 
+  const fullTitle = `${SITE_NAME} | ${title}`;
+
   return {
-    title: `${title} | ${SITE_NAME}`,
+    title: fullTitle,
     description,
     metadataBase: new URL(SITE_URL),
     alternates: { canonical: url },
     openGraph: {
-      title,
+      title: fullTitle,
       description,
       url,
       siteName: SITE_NAME,
       locale: "zh_CN",
       type,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: fullTitle }],
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: fullTitle,
       description,
       images: [ogImage],
     },

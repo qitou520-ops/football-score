@@ -20,7 +20,7 @@ export default async function NewsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("news");
-  const articles = await getNews();
+  const articles = await getNews(locale);
 
   return (
     <PageShell showLeagues={false}>

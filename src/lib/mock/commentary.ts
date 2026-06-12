@@ -85,7 +85,7 @@ export function getCommentaryByMatchId(matchId: number): LiveCommentaryResponse 
     matchId,
     isLive,
     elapsed,
-    status: fixture ? formatMatchStatusLong(fixture.fixture.status) : "未开始",
+    status: fixture ? formatMatchStatusLong(fixture.fixture.status, "zh") : "未开始",
     items: [...visible].sort((a, b) => {
       const ma = a.minute ?? (a.statusKind === "kickoff" ? -1 : a.statusKind === "ht" ? 45 : a.statusKind === "ft" ? 90 : 46);
       const mb = b.minute ?? (b.statusKind === "kickoff" ? -1 : b.statusKind === "ht" ? 45 : b.statusKind === "ft" ? 90 : 46);

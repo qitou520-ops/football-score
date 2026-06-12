@@ -2,9 +2,10 @@
 
 import { Link } from "@/i18n/navigation";
 import { POPULAR_LEAGUES } from "@/lib/api-football/constants";
-import { translateLeagueName } from "@/lib/translations";
+import { translateLeagueName } from "@/lib/translations/client";
 import { cn } from "@/lib/utils";
 import { ds } from "@/lib/design";
+import { RemoteImage } from "@/components/ui/remote-image";
 
 interface LeagueScrollBarProps {
   activeLeagueId?: number;
@@ -30,7 +31,7 @@ export function LeagueScrollBar({ activeLeagueId, className }: LeagueScrollBarPr
         {POPULAR_LEAGUES.map((league) => (
           <Link
             key={league.id}
-            href={`/league/${league.id}/standings`}
+            href={`/league/${league.id}/fixtures`}
             className={cn(
               ds.pill,
               "text-xs shrink-0",
@@ -39,8 +40,7 @@ export function LeagueScrollBar({ activeLeagueId, className }: LeagueScrollBarPr
                 : ds.pillInactive + " text-muted-foreground"
             )}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={league.logo} alt="" className="h-4 w-4 object-contain" />
+            <RemoteImage src={league.logo} alt="" width={16} height={16} className="h-4 w-4" />
             {translateLeagueName(league.id, league.name)}
           </Link>
         ))}

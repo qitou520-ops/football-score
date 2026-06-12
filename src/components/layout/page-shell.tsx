@@ -2,6 +2,7 @@ import { LeagueSidebar } from "@/components/league/league-sidebar";
 import { LeagueScrollBar } from "@/components/league/league-scroll-bar";
 import { SidebarWidget } from "@/components/layout/sidebar-widget";
 import { AdBanner } from "@/components/ads/ad-banner";
+import { WorldCupBettingAd } from "@/components/ads/world-cup-betting-ad";
 import { ds } from "@/lib/design";
 
 interface PageShellProps {
@@ -19,12 +20,13 @@ export function PageShell({
     <>
       <div className="hidden md:block border-b border-border bg-card">
         <div className={`container mx-auto max-w-7xl ${ds.pageX} py-3`}>
-          <AdBanner position="homepage-top" />
+          <AdBanner position="homepage-banner" />
         </div>
       </div>
 
       <div className={`container mx-auto ${ds.pageX} ${ds.pageY} max-w-7xl`}>
-        <div className="md:hidden mb-3">
+        <div className={`md:hidden mb-3 ${ds.stackSm}`}>
+          <WorldCupBettingAd variant="compact" />
           <AdBanner position="mobile-banner" />
         </div>
 
@@ -35,8 +37,9 @@ export function PageShell({
         <div className={`grid grid-cols-1 lg:grid-cols-12 ${ds.gridGap}`}>
           {showLeagues && (
             <aside className="lg:col-span-2 hidden lg:block">
-              <div className="sticky top-14">
+              <div className={`sticky top-14 ${ds.stackSm}`}>
                 <LeagueSidebar activeLeagueId={activeLeagueId} />
+                <WorldCupBettingAd variant="compact" />
               </div>
             </aside>
           )}
@@ -49,7 +52,6 @@ export function PageShell({
             <div className={`sticky top-14 ${ds.stackSm}`}>
               <AdBanner position="homepage-sidebar" />
               <SidebarWidget />
-              <AdBanner position="homepage-sidebar" />
             </div>
           </aside>
         </div>

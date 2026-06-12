@@ -82,3 +82,39 @@ export function adaptPlayerSearchResults(
 ): Domain.PlayerSearchResult[] {
   return raw.map((r) => ({ player: adaptPlayer(r.player) }));
 }
+
+export function adaptLeagueTeams(raw: Vendor.TeamDetail[]): Domain.LeagueTeamItem[] {
+  return raw.map((item) => ({
+    id: item.team.id,
+    name: item.team.name,
+    logo: item.team.logo,
+    country: item.team.country || "",
+  }));
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function adaptTopScorers(raw: { player: Vendor.Player; statistics: any[] }[]): Domain.LeagueTopScorer[] {
+  const rows: Domain.LeagueTopScorer[] = [];
+
+  for (const row of raw) {
+    const stat = row.statistics?.[0];
+    if (!stat) continue;
+    const goals = stat.goals ?? {};
+    const games = stat.games ?? {};
+    rows.push({
+      player: adaptPlayer(row.player),
+      team: {
+        id: stat.team?.id ?? 0,
+        name: stat.team?.name ?? "-",
+        logo: stat.team?.logo ?? "",
+        winner: null,
+      },
+      goals: goals.total ?? 0,
+      assists: goals.assists ?? 0,
+      appearances: games.appearences ?? games.appearances ?? 0,
+      penalties: goals.penalty ?? 0,
+    });
+  }
+
+  return rows.sort((a, b) => b.goals - a.goals || b.assists - a.assists);
+}

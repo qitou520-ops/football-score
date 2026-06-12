@@ -1,15 +1,15 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { POPULAR_LEAGUES } from "@/lib/api-football/constants";
-import { translateLeagueName } from "@/lib/translations";
-import { Send } from "lucide-react";
+import { translateLeagueName } from "@/lib/translations/client";
 import { SiteLogo } from "@/components/brand/site-logo";
+import { getSettings } from "@/lib/cms";
 
 export async function Footer() {
   const t = await getTranslations("common");
   const tf = await getTranslations("footer");
   const tn = await getTranslations("nav");
-  const telegramUrl = process.env.NEXT_PUBLIC_TELEGRAM_URL || "https://t.me/hga050h_com";
+  const settings = await getSettings();
 
   return (
     <footer className="hidden md:block border-t border-border bg-muted/30 mt-auto">
@@ -17,18 +17,11 @@ export async function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="mb-3">
-              <SiteLogo name={t("siteName")} size="lg" />
+              <SiteLogo name={settings.siteName || t("siteName")} size="lg" />
             </div>
-            <p className="text-sm text-muted-foreground">{tf("description")}</p>
-            <a
-              href={telegramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-3 text-sm text-primary hover:underline"
-            >
-              <Send className="h-4 w-4" />
-              {t("followTelegram")}
-            </a>
+            <p className="text-sm text-muted-foreground">
+              {settings.siteDescription || tf("description")}
+            </p>
           </div>
 
           <div>
@@ -37,7 +30,7 @@ export async function Footer() {
               {POPULAR_LEAGUES.slice(0, 5).map((league) => (
                 <li key={league.id}>
                   <Link
-                    href={`/league/${league.id}/standings`}
+                    href={`/league/${league.id}/fixtures`}
                     prefetch
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >

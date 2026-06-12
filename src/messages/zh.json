@@ -49,7 +49,8 @@
     "filterByTime": "按时间",
     "noLiveMatches": "当前暂无进行中的比赛",
     "noMatches": "该日期暂无比赛",
-    "featuredMatches": "热门比赛"
+    "featuredMatches": "热门比赛",
+    "noWorldCupToday": "暂无今日世界杯比赛"
   },
   "live": {
     "title": "足球即时比分",
@@ -63,11 +64,12 @@
     "stats": "技术统计",
     "timeline": "比赛事件",
     "commentary": "文字直播",
+    "preMatch": "赛前分析",
     "commentaryLabels": {
       "title": "文字直播",
       "live": "进行中",
       "updating": "更新中…",
-      "empty": "暂无文字直播",
+      "empty": "暂无文字直播数据",
       "goal": "进球",
       "yellowCard": "黄牌",
       "redCard": "红牌",
@@ -76,6 +78,18 @@
       "assist": "助攻",
       "in": "换上",
       "out": "换下"
+    },
+    "chatLabels": {
+      "title": "球迷聊天室",
+      "nickname": "昵称",
+      "placeholder": "说点什么…",
+      "send": "发送",
+      "disclaimer": "文明交流，理性看球",
+      "empty": "暂无聊天消息，快来抢沙发！",
+      "sending": "发送中…",
+      "rateLimited": "发送太频繁，请稍后再试",
+      "invalidMessage": "消息内容无效",
+      "guestPrefix": "游客"
     }
   },
   "standings": {
@@ -89,11 +103,35 @@
     "lost": "负",
     "gd": "净胜球",
     "points": "积分",
-    "form": "近况"
+    "form": "近况",
+    "noData": "暂无积分榜数据",
+    "loadFailed": "获取积分榜失败，请稍后重试"
   },
   "fixtures": {
     "title": "{league} 赛程",
-    "description": "{league} 近期赛程与比赛结果。"
+    "description": "{league} 近期赛程与比赛结果。",
+    "noData": "暂无赛程"
+  },
+  "leagueNav": {
+    "fixtures": "赛程",
+    "standings": "积分",
+    "players": "球员",
+    "teams": "球队"
+  },
+  "leaguePlayers": {
+    "title": "{league} 球员",
+    "description": "{league} 射手榜与球员数据统计。",
+    "player": "球员",
+    "team": "球队",
+    "goals": "进球",
+    "assists": "助攻",
+    "played": "场次",
+    "noData": "暂无球员数据"
+  },
+  "leagueTeams": {
+    "title": "{league} 球队",
+    "description": "{league} 参赛球队一览。",
+    "noData": "暂无球队数据"
   },
   "team": {
     "title": "{team}",
@@ -141,7 +179,16 @@
   "ads": {
     "title": "广告展示",
     "description": "本站合作推广与自定义广告内容。",
-    "empty": "暂无广告内容"
+    "empty": "暂无广告内容",
+    "worldCup": {
+      "brand": "皇冠体育",
+      "badge": "皇冠体育 · 2026 美加墨世界杯",
+      "title": "皇冠体育 世界杯投注",
+      "subtitle": "皇冠体育 · 冠军争夺 · 实时赔率 · 安全可靠",
+      "sidebarDesc": "皇冠体育 — 冠军之争火热进行中，赔率高、存取快，专业平台值得信赖。",
+      "compactDesc": "皇冠体育 2026世界杯冠军投注，赔率高 · 存取快",
+      "cta": "皇冠体育 立即投注"
+    }
   },
   "footer": {
     "description": "专业的足球即时比分平台，提供赛程、积分榜与比赛数据。",

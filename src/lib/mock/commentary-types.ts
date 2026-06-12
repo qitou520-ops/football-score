@@ -22,7 +22,7 @@ export interface LiveCommentaryItem {
   assist?: string;
   score?: { home: number; away: number };
   /** 状态类型：kickoff | ht | ft | second_half */
-  statusKind?: "kickoff" | "ht" | "ft" | "second_half";
+  statusKind?: "kickoff" | "ht" | "ft" | "second_half" | "injury_time";
   text: string;
   detail?: string;
 }

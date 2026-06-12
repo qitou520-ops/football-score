@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getLiveFixtures } from "@/lib/data";
 import { CACHE_HEADERS } from "@/lib/cache/headers";
+import { localizeFixtures } from "@/lib/translations/localize-fixture";
 
 export const dynamic = "force-dynamic";
 
@@ -9,9 +10,10 @@ function errorMessage(err: unknown): string {
   return "获取实时比赛失败";
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const fixtures = await getLiveFixtures();
+    const locale = request.nextUrl.searchParams.get("locale") ?? "zh";
+    const fixtures = localizeFixtures(await getLiveFixtures(), locale);
     return NextResponse.json(
       { fixtures },
       {

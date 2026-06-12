@@ -1,6 +1,9 @@
+"use client";
+
 import { Link } from "@/i18n/navigation";
+import { RemoteImage } from "@/components/ui/remote-image";
 import type { StandingRow } from "@/lib/api-football/types";
-import { translateTeamName } from "@/lib/translations";
+import { translateTeamName } from "@/lib/translations/client";
 import { cn } from "@/lib/utils";
 
 interface StandingsTableProps {
@@ -52,8 +55,7 @@ export function StandingsTable({ rows, labels }: StandingsTableProps) {
                   href={`/team/${row.team.id}`}
                   className="flex items-center gap-2 hover:text-primary transition-colors"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={row.team.logo} alt="" className="h-5 w-5 object-contain" />
+                  <RemoteImage src={row.team.logo} alt="" width={20} height={20} className="h-5 w-5" />
                   <span className="font-medium truncate max-w-[140px] sm:max-w-none">
                     {translateTeamName(row.team.id, row.team.name)}
                   </span>

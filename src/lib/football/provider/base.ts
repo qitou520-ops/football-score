@@ -39,4 +39,6 @@ export abstract class StubFootballProvider implements FootballDataProvider {
   async getPlayerById(_id: number, _season?: number) { return this.notImplemented("getPlayerById"); }
   async searchPlayers(_query: string, _season?: number) { return this.notImplemented("searchPlayers"); }
   async getStandings(_leagueId: number, _season?: number) { return this.notImplemented("getStandings"); }
+  async getLeagueTeams(_leagueId: number, _season?: number) { return this.notImplemented("getLeagueTeams"); }
+  async getLeagueTopScorers(_leagueId: number, _season?: number) { return this.notImplemented("getLeagueTopScorers"); }
 }

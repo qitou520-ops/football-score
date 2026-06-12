@@ -1,7 +1,16 @@
 import { promises as fs } from "fs";
 import path from "path";
-import type { AdItem, CmsData, NewsItem, PredictionItem, SiteSettings, FeaturedMatchItem } from "./types";
+import type {
+  AdItem,
+  AffiliateLinkItem,
+  CmsData,
+  NewsItem,
+  PredictionItem,
+  SiteSettings,
+  FeaturedMatchItem,
+} from "./types";
 import { DEFAULT_SETTINGS, newId } from "./types";
+import { sanitizeAdHtml } from "@/lib/sanitize/ad-html";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const DATA_FILE = path.join(DATA_DIR, "cms.json");
@@ -11,6 +20,7 @@ const EMPTY: CmsData = {
   news: [],
   predictions: [],
   featuredMatches: [],
+  affiliateLinks: [],
   settings: { ...DEFAULT_SETTINGS },
 };
 
@@ -49,7 +59,8 @@ export async function fileGetAds(position?: string): Promise<AdItem[]> {
     : null;
   return data.ads
     .filter((a) => a.active && (!positions || positions.has(a.position)))
-    .sort((a, b) => b.priority - a.priority);
+    .sort((a, b) => b.priority - a.priority)
+    .map((ad) => ({ ...ad, htmlCode: sanitizeAdHtml(ad.htmlCode) }));
 }
 
 export async function fileSaveAd(ad: Omit<AdItem, "id" | "createdAt" | "updatedAt"> & { id?: string }): Promise<AdItem> {
@@ -248,5 +259,68 @@ export async function fileSaveFeaturedMatch(
 export async function fileDeleteFeaturedMatch(id: string) {
   const data = await ensureFile();
   data.featuredMatches = (data.featuredMatches ?? []).filter((m) => m.id !== id);
+  await save(data);
+}
+
+export async function fileGetAffiliateLinks(): Promise<AffiliateLinkItem[]> {
+  const data = await ensureFile();
+  return (data.affiliateLinks ?? []).sort(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  );
+}
+
+export async function fileGetAffiliateBySlug(slug: string): Promise<AffiliateLinkItem | null> {
+  const data = await ensureFile();
+  return (data.affiliateLinks ?? []).find((l) => l.slug === slug && l.active) ?? null;
+}
+
+export async function fileSaveAffiliateLink(
+  link: Partial<AffiliateLinkItem> & { name: string; slug: string; destination: string }
+): Promise<AffiliateLinkItem> {
+  const data = await ensureFile();
+  if (!data.affiliateLinks) data.affiliateLinks = [];
+  const now = new Date().toISOString();
+  if (link.id) {
+    const idx = data.affiliateLinks.findIndex((l) => l.id === link.id);
+    if (idx >= 0) {
+      data.affiliateLinks[idx] = {
+        ...data.affiliateLinks[idx],
+        ...link,
+        partner: link.partner ?? data.affiliateLinks[idx].partner,
+        updatedAt: now,
+      };
+      await save(data);
+      return data.affiliateLinks[idx];
+    }
+  }
+  const row: AffiliateLinkItem = {
+    id: newId(),
+    name: link.name,
+    slug: link.slug,
+    destination: link.destination,
+    partner: link.partner ?? "partner",
+    active: link.active ?? true,
+    clicks: link.clicks ?? 0,
+    createdAt: now,
+    updatedAt: now,
+  };
+  data.affiliateLinks.push(row);
+  await save(data);
+  return row;
+}
+
+export async function fileTrackAffiliateClick(slug: string): Promise<string | null> {
+  const data = await ensureFile();
+  const idx = (data.affiliateLinks ?? []).findIndex((l) => l.slug === slug && l.active);
+  if (idx < 0) return null;
+  data.affiliateLinks[idx].clicks += 1;
+  data.affiliateLinks[idx].updatedAt = new Date().toISOString();
+  await save(data);
+  return data.affiliateLinks[idx].destination;
+}
+
+export async function fileDeleteAffiliateLink(id: string) {
+  const data = await ensureFile();
+  data.affiliateLinks = (data.affiliateLinks ?? []).filter((l) => l.id !== id);
   await save(data);
 }

@@ -9,6 +9,8 @@ import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/metadata";
 
 import { routing, type Locale } from "@/i18n/routing";
 import { HtmlLang } from "@/components/layout/html-lang";
+import { getSettings } from "@/lib/cms";
+import { SiteSettingsProvider } from "@/components/providers/site-settings-provider";
 
 type Props = {
   children: React.ReactNode;
@@ -23,16 +25,19 @@ export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const messages = await getMessages();
+  const settings = await getSettings();
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <HtmlLang locale={locale as Locale} />
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <NavigationProgress />
-        <StructuredData data={[organizationJsonLd(), websiteJsonLd()]} />
-        <AppShell>{children}</AppShell>
-        <Footer />
-      </ThemeProvider>
+      <SiteSettingsProvider settings={settings}>
+        <HtmlLang locale={locale as Locale} />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <NavigationProgress />
+          <StructuredData data={[organizationJsonLd(), websiteJsonLd()]} />
+          <AppShell>{children}</AppShell>
+          <Footer />
+        </ThemeProvider>
+      </SiteSettingsProvider>
     </NextIntlClientProvider>
   );
 }

@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { ds } from "@/lib/design";
 import { cn } from "@/lib/utils";
 import { MatchListSkeleton } from "@/components/ui/skeleton";
-import { translateLeagueName } from "@/lib/translations";
+import { translateLeagueName } from "@/lib/translations/client";
 
 interface ApiFixturesResponse {
   fixtures: Fixture[];
@@ -71,14 +71,14 @@ export function LiveScoreFeed() {
       {groups.map(({ league, fixtures: leagueFixtures }) => (
         <section key={league.id} className={ds.panel}>
           <Link
-            href={`/league/${league.id}/standings`}
+            href={`/league/${league.id}/fixtures`}
             prefetch
             className="flex items-center gap-2.5 px-4 py-3 bg-muted/50 hover:bg-muted transition-colors border-b border-border"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={league.logo} alt="" className="h-5 w-5 object-contain" />
             <span className={ds.sectionTitle + " flex-1 truncate"}>
-              {translateLeagueName(league.id, league.name)}
+              {translateLeagueName(league.id, league.name, league.country)}
             </span>
             <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
           </Link>

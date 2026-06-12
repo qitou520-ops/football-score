@@ -92,7 +92,7 @@ export function formatMatchStatusLong(
     return fallback;
   }
   const short = normalizeStatusShort(status?.short);
-  if (!isEmptyStatusValue(status?.long) && !map[short]) {
+  if (!isEmptyStatusValue(status?.long) && !map[short] && !isZh) {
     return status!.long!.trim();
   }
   return map[short] ?? fallback;

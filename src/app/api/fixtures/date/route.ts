@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getFixturesByDate } from "@/lib/data";
 import { CACHE_HEADERS } from "@/lib/cache/headers";
+import { localizeFixtures } from "@/lib/translations/localize-fixture";
 
 function errorMessage(err: unknown): string {
   if (err instanceof Error) return err.message;
@@ -14,7 +15,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const fixtures = await getFixturesByDate(date);
+    const locale = request.nextUrl.searchParams.get("locale") ?? "zh";
+    const fixtures = localizeFixtures(await getFixturesByDate(date), locale);
     return NextResponse.json(
       { fixtures, date },
       {

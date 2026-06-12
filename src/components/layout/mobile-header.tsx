@@ -8,15 +8,17 @@ import { Search } from "lucide-react";
 import { ds } from "@/lib/design";
 import { cn } from "@/lib/utils";
 import { SiteLogo } from "@/components/brand/site-logo";
+import { useSiteSettings } from "@/components/providers/site-settings-provider";
 
 export function MobileHeader() {
   const tc = useTranslations("common");
+  const { siteName } = useSiteSettings();
 
   return (
     <header className={cn(ds.header, "md:hidden")}>
       <div className="flex h-12 items-center justify-between px-4">
         <Link href="/" prefetch>
-          <SiteLogo name={tc("siteName")} size="sm" />
+          <SiteLogo name={siteName || tc("siteName")} size="sm" />
         </Link>
         <div className="flex items-center gap-2">
           <LanguageSwitcher />

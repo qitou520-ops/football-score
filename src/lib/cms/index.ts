@@ -2,8 +2,16 @@ import "server-only";
 
 import { prisma } from "@/lib/db/prisma";
 import { shouldUseDatabase } from "@/lib/db/is-enabled";
-import type { AdItem, NewsItem, PredictionItem, SiteSettings, FeaturedMatchItem } from "./types";
+import type {
+  AdItem,
+  AffiliateLinkItem,
+  NewsItem,
+  PredictionItem,
+  SiteSettings,
+  FeaturedMatchItem,
+} from "./types";
 import { AD_POSITION_ALIASES, DEFAULT_SETTINGS } from "./types";
+import { sanitizeAdHtml } from "@/lib/sanitize/ad-html";
 import * as file from "./file-store";
 
 function resolveAdPositions(position: string): string[] {
@@ -35,7 +43,7 @@ function mapAd(row: {
     name: row.name,
     position: row.position,
     title: row.title || row.name,
-    htmlCode: row.htmlCode,
+    htmlCode: sanitizeAdHtml(row.htmlCode),
     imageUrl: row.imageUrl || "",
     linkUrl: row.linkUrl || "",
     active: row.active,
@@ -301,6 +309,7 @@ export async function getSettings(): Promise<SiteSettings> {
       siteName: map.siteName || DEFAULT_SETTINGS.siteName,
       telegramUrl: map.telegramUrl || DEFAULT_SETTINGS.telegramUrl,
       siteDescription: map.siteDescription || DEFAULT_SETTINGS.siteDescription,
+      partnerUrl: map.partnerUrl || DEFAULT_SETTINGS.partnerUrl,
     };
   } catch {
     return file.fileGetSettings();
@@ -410,4 +419,84 @@ export async function saveFeaturedMatch(
 export async function deleteFeaturedMatch(id: string) {
   if (!shouldUseDatabase()) return file.fileDeleteFeaturedMatch(id);
   await prisma.featuredMatch.delete({ where: { id } });
+}
+
+export async function getAffiliateLinks(): Promise<AffiliateLinkItem[]> {
+  if (!shouldUseDatabase()) return file.fileGetAffiliateLinks();
+  try {
+    const rows = await prisma.affiliateLink.findMany({ orderBy: { updatedAt: "desc" } });
+    return rows.map((r) => ({
+      id: r.id,
+      name: r.name,
+      slug: r.slug,
+      destination: r.destination,
+      partner: r.partner,
+      active: r.active,
+      clicks: r.clicks,
+      createdAt: r.createdAt.toISOString(),
+      updatedAt: r.updatedAt.toISOString(),
+    }));
+  } catch {
+    return file.fileGetAffiliateLinks();
+  }
+}
+
+export async function saveAffiliateLink(
+  data: Partial<AffiliateLinkItem> & { name: string; slug: string; destination: string }
+): Promise<AffiliateLinkItem> {
+  if (!shouldUseDatabase()) return file.fileSaveAffiliateLink(data);
+  const r = data.id
+    ? await prisma.affiliateLink.update({
+        where: { id: data.id },
+        data: {
+          name: data.name,
+          slug: data.slug,
+          destination: data.destination,
+          partner: data.partner ?? "partner",
+          active: data.active ?? true,
+        },
+      })
+    : await prisma.affiliateLink.create({
+        data: {
+          name: data.name,
+          slug: data.slug,
+          destination: data.destination,
+          partner: data.partner ?? "partner",
+          active: data.active ?? true,
+        },
+      });
+  return {
+    id: r.id,
+    name: r.name,
+    slug: r.slug,
+    destination: r.destination,
+    partner: r.partner,
+    active: r.active,
+    clicks: r.clicks,
+    createdAt: r.createdAt.toISOString(),
+    updatedAt: r.updatedAt.toISOString(),
+  };
+}
+
+export async function deleteAffiliateLink(id: string) {
+  if (!shouldUseDatabase()) return file.fileDeleteAffiliateLink(id);
+  await prisma.affiliateLink.delete({ where: { id } });
+}
+
+export async function trackAffiliateClick(slug: string): Promise<string | null> {
+  if (!shouldUseDatabase()) return file.fileTrackAffiliateClick(slug);
+  try {
+    const link = await prisma.affiliateLink.findUnique({ where: { slug, active: true } });
+    if (!link) return file.fileTrackAffiliateClick(slug);
+    await prisma.$transaction([
+      prisma.affiliateClick.create({ data: { linkId: link.id, ipHash: "anonymous" } }),
+      prisma.affiliateLink.update({
+        where: { id: link.id },
+        data: { clicks: { increment: 1 } },
+      }),
+    ]);
+    return link.destination;
+  } catch {
+    return file.fileTrackAffiliateClick(slug);
+  }
 }

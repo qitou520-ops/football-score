@@ -10,15 +10,20 @@ import {
 import type { NewsItem, PredictionItem } from "@/lib/cms/types";
 import type { NewsArticle } from "@/lib/mock/news";
 import type { PredictionArticle } from "@/lib/mock/predictions";
-import { getFixtureById } from "./fixtures";
+import { getFixtureById, getTodayFixtures } from "./fixtures";
 
-function toNewsArticle(item: NewsItem): NewsArticle {
+function pickLocale<T extends string>(locale: string, zh: T, en: T | undefined | null): T {
+  if (locale === "en" && en) return en;
+  return zh;
+}
+
+function toNewsArticle(item: NewsItem, locale = "zh"): NewsArticle {
   return {
     id: item.id,
     slug: item.slug,
-    title: item.titleZh,
-    excerpt: item.excerptZh,
-    content: item.contentZh,
+    title: pickLocale(locale, item.titleZh, item.titleEn),
+    excerpt: pickLocale(locale, item.excerptZh, item.excerptEn),
+    content: pickLocale(locale, item.contentZh, item.contentEn),
     coverImage: item.coverImage,
     category: "news",
     publishedAt: item.publishedAt || item.createdAt,
@@ -27,13 +32,13 @@ function toNewsArticle(item: NewsItem): NewsArticle {
   };
 }
 
-function toPredictionArticle(item: PredictionItem): PredictionArticle {
+function toPredictionArticle(item: PredictionItem, locale = "zh"): PredictionArticle {
   return {
     id: item.id,
     slug: item.slug,
-    title: item.titleZh,
-    excerpt: item.excerptZh,
-    content: item.contentZh,
+    title: pickLocale(locale, item.titleZh, item.titleEn),
+    excerpt: pickLocale(locale, item.excerptZh, item.excerptEn),
+    content: pickLocale(locale, item.contentZh, item.contentEn),
     coverImage: item.coverImage,
     league: "",
     matchLabel: item.matchId ? `比赛 #${item.matchId}` : "",
@@ -44,40 +49,49 @@ function toPredictionArticle(item: PredictionItem): PredictionArticle {
   };
 }
 
-export async function getNews(): Promise<NewsArticle[]> {
+export async function getNews(locale = "zh"): Promise<NewsArticle[]> {
   const items = await cmsGetNews(true);
-  if (items.length) return items.map(toNewsArticle);
+  if (items.length) return items.map((item) => toNewsArticle(item, locale));
   const mock = await import("@/lib/mock/news");
   return mock.NEWS;
 }
 
-export async function getNewsBySlug(slug: string): Promise<NewsArticle | null> {
+export async function getNewsBySlug(slug: string, locale = "zh"): Promise<NewsArticle | null> {
   const item = await cmsGetNewsBySlug(slug);
-  if (item) return toNewsArticle(item);
+  if (item) return toNewsArticle(item, locale);
   const mock = await import("@/lib/mock/news");
   return mock.getNewsBySlug(slug);
 }
 
-export async function getPredictions(): Promise<PredictionArticle[]> {
+export async function getPredictions(locale = "zh"): Promise<PredictionArticle[]> {
   const items = await cmsGetPredictions(true);
-  if (items.length) return items.map(toPredictionArticle);
+  if (items.length) return items.map((item) => toPredictionArticle(item, locale));
   const mock = await import("@/lib/mock/predictions");
   return mock.PREDICTIONS;
 }
 
-export async function getPredictionBySlug(slug: string): Promise<PredictionArticle | null> {
+export async function getPredictionBySlug(slug: string, locale = "zh"): Promise<PredictionArticle | null> {
   const item = await cmsGetPredictionBySlug(slug);
-  if (item) return toPredictionArticle(item);
+  if (item) return toPredictionArticle(item, locale);
   const mock = await import("@/lib/mock/predictions");
   return mock.getPredictionBySlug(slug);
 }
 
 export async function getFeaturedMatchFixtures() {
   const featured = await getFeaturedMatches(true);
-  const fixtures = await Promise.all(
-    featured.map((f) => getFixtureById(f.matchId).catch(() => null))
+  if (!featured.length) return [];
+
+  const todayFixtures = await getTodayFixtures().catch(() => []);
+  const byId = new Map(todayFixtures.map((f) => [f.fixture.id, f]));
+
+  const results = await Promise.all(
+    featured.map(async (f) => {
+      const cached = byId.get(f.matchId);
+      if (cached) return cached;
+      return getFixtureById(f.matchId).catch(() => null);
+    })
   );
-  return fixtures.filter((f): f is NonNullable<typeof f> => f !== null);
+  return results.filter((f): f is NonNullable<typeof f> => f !== null);
 }
 
 export type { NewsArticle, PredictionArticle };

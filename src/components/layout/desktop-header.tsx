@@ -8,6 +8,7 @@ import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ds } from "@/lib/design";
 import { SiteLogo } from "@/components/brand/site-logo";
+import { useSiteSettings } from "@/components/providers/site-settings-provider";
 
 const NAV_ITEMS = [
   { href: "/news", labelKey: "news" as const },
@@ -18,6 +19,7 @@ const NAV_ITEMS = [
 export function DesktopHeader() {
   const t = useTranslations("nav");
   const tc = useTranslations("common");
+  const { siteName } = useSiteSettings();
   const pathname = usePathname();
 
   const isActive = (href: string) => pathname.startsWith(href);
@@ -27,7 +29,7 @@ export function DesktopHeader() {
       <div className="container mx-auto max-w-7xl px-4 h-full">
         <div className="flex h-full items-center gap-6">
           <Link href="/" prefetch className="shrink-0">
-            <SiteLogo name={tc("siteName")} />
+            <SiteLogo name={siteName || tc("siteName")} />
           </Link>
 
           <Link href="/search" prefetch className="flex-1 max-w-lg mx-auto">

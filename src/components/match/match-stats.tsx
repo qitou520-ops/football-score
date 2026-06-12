@@ -3,7 +3,7 @@
 import { useLocale } from "next-intl";
 import type { MatchStatistic } from "@/lib/api-football/types";
 import { translateStatType } from "@/lib/match/stat-labels";
-import { translateTeamName } from "@/lib/translations";
+import { translateTeamName } from "@/lib/translations/client";
 import { cn } from "@/lib/utils";
 
 interface MatchStatsProps {

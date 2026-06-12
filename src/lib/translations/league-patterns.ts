@@ -25,6 +25,11 @@ const LEAGUE_EXACT: Record<string, string> = {
   "Copa Sudamericana": "南美俱乐部杯",
   "AFC Champions League": "亚冠",
   "AFC Champions League Elite": "亚冠精英联赛",
+  "1 Lyga": "立陶宛甲级联赛",
+  "2 Lyga": "立陶宛乙级联赛",
+  "1. Deild": "冰岛甲级联赛",
+  "2. Deild": "冰岛乙级联赛",
+  "A Lyga": "立陶宛超级联赛",
 };
 
 /** 关键词替换（用于生成可读中文联赛名） */
@@ -88,8 +93,39 @@ const COUNTRY_PREFIX: Record<string, string> = {
   Belgium: "比利时",
 };
 
-export function translateLeagueByPattern(name: string): string | null {
+const TIER_BY_SUFFIX: [RegExp, string][] = [
+  [/^1\.?\s*Lyga$/i, "甲级联赛"],
+  [/^2\.?\s*Lyga$/i, "乙级联赛"],
+  [/^1\.?\s*Deild$/i, "甲级联赛"],
+  [/^2\.?\s*Deild$/i, "乙级联赛"],
+  [/^1\.?\s*Division$/i, "甲级联赛"],
+  [/^2\.?\s*Division$/i, "乙级联赛"],
+  [/^3\.?\s*Division/i, "丙级联赛"],
+  [/^1st\s+League/i, "一级联赛"],
+  [/^2nd\s+League/i, "二级联赛"],
+  [/^II\s+Liga/i, "乙级联赛"],
+  [/^III\s+Liga/i, "丙级联赛"],
+  [/^IV\s+Liga/i, "丁级联赛"],
+  [/^Primera\s+Divisi[oó]n$/i, "顶级联赛"],
+  [/^Segunda\s+Divisi[oó]n$/i, "次级联赛"],
+  [/^Ykkönen$/i, "芬甲"],
+  [/^Kakkonen/i, "芬乙"],
+  [/^Regionalliga/i, "地区联赛"],
+  [/^Landesliga/i, "州级联赛"],
+  [/^Botola\s*2?$/i, "摩洛哥联赛"],
+];
+
+export function translateLeagueByPattern(name: string, countryZh?: string): string | null {
   if (LEAGUE_EXACT[name]) return LEAGUE_EXACT[name];
+
+  if (countryZh) {
+    for (const [re, tier] of TIER_BY_SUFFIX) {
+      if (re.test(name)) {
+        const rest = name.replace(re, "").trim();
+        return rest ? `${countryZh}${tier}${rest}` : `${countryZh}${tier}`;
+      }
+    }
+  }
 
   for (const [country, zh] of Object.entries(COUNTRY_PREFIX)) {
     if (name.startsWith(country + " ")) {

@@ -12,7 +12,7 @@ export const adSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, "广告名称不能为空"),
   title: z.string().optional(),
-  position: z.enum(adPositions),
+  position: z.union([z.enum(adPositions), z.string().min(1)]),
   htmlCode: z.string().optional(),
   imageUrl: z.string().optional(),
   linkUrl: z.string().optional(),
@@ -50,4 +50,11 @@ export const featuredMatchSchema = z.object({
   matchId: z.number().int().positive("比赛 ID 必须为正整数"),
   sortOrder: z.number().int().optional(),
   active: z.boolean().optional(),
+});
+
+export const settingsSchema = z.object({
+  siteName: z.string().min(1).optional(),
+  siteDescription: z.string().optional(),
+  telegramUrl: z.string().optional(),
+  partnerUrl: z.union([z.string().url(), z.literal("")]).optional(),
 });

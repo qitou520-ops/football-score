@@ -8,6 +8,8 @@ import type {
   FixtureLineup,
   PlayerProfile,
   PlayerSearchResult,
+  LeagueTeamItem,
+  LeagueTopScorer,
   ProviderHealth,
   FootballProviderId,
 } from "@/lib/football/types";
@@ -51,6 +53,8 @@ export interface FootballDataProvider {
   // ── 积分榜 ────────────────────────────────────────────
 
   getStandings(leagueId: number, season?: number): Promise<StandingRow[][]>;
+  getLeagueTeams(leagueId: number, season?: number): Promise<LeagueTeamItem[]>;
+  getLeagueTopScorers(leagueId: number, season?: number): Promise<LeagueTopScorer[]>;
 
   // ── 运维 ──────────────────────────────────────────────
 

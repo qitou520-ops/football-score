@@ -49,7 +49,8 @@
     "filterByTime": "By Date",
     "noLiveMatches": "No live matches at the moment",
     "noMatches": "No matches on this date",
-    "featuredMatches": "Featured Matches"
+    "featuredMatches": "Featured Matches",
+    "noWorldCupToday": "No World Cup matches today"
   },
   "live": {
     "title": "Live Football Scores",
@@ -63,11 +64,12 @@
     "stats": "Statistics",
     "timeline": "Events",
     "commentary": "Commentary",
+    "preMatch": "Pre-match Analysis",
     "commentaryLabels": {
       "title": "Live Commentary",
       "live": "Live",
       "updating": "Updating…",
-      "empty": "No commentary available",
+      "empty": "No live commentary data",
       "goal": "Goal",
       "yellowCard": "Yellow Card",
       "redCard": "Red Card",
@@ -76,6 +78,18 @@
       "assist": "Assist",
       "in": "In",
       "out": "Out"
+    },
+    "chatLabels": {
+      "title": "Fan Chat",
+      "nickname": "Nickname",
+      "placeholder": "Say something…",
+      "send": "Send",
+      "disclaimer": "Be respectful. Enjoy the game.",
+      "empty": "No messages yet. Start the conversation!",
+      "sending": "Sending…",
+      "rateLimited": "Too many messages. Please wait.",
+      "invalidMessage": "Invalid message",
+      "guestPrefix": "Guest"
     }
   },
   "standings": {
@@ -89,11 +103,35 @@
     "lost": "L",
     "gd": "GD",
     "points": "Pts",
-    "form": "Form"
+    "form": "Form",
+    "noData": "No standings available",
+    "loadFailed": "Failed to load standings. Please try again later."
   },
   "fixtures": {
     "title": "{league} Fixtures",
-    "description": "Upcoming and past {league} fixtures and results."
+    "description": "Upcoming and past {league} fixtures and results.",
+    "noData": "No fixtures available"
+  },
+  "leagueNav": {
+    "fixtures": "Fixtures",
+    "standings": "Table",
+    "players": "Players",
+    "teams": "Teams"
+  },
+  "leaguePlayers": {
+    "title": "{league} Players",
+    "description": "Top scorers and player statistics for {league}.",
+    "player": "Player",
+    "team": "Team",
+    "goals": "Goals",
+    "assists": "Assists",
+    "played": "Apps",
+    "noData": "No player data available"
+  },
+  "leagueTeams": {
+    "title": "{league} Teams",
+    "description": "All teams participating in {league}.",
+    "noData": "No team data available"
   },
   "team": {
     "title": "{team}",
@@ -141,7 +179,16 @@
   "ads": {
     "title": "Advertisements",
     "description": "Sponsored content and partner promotions.",
-    "empty": "No ads available"
+    "empty": "No ads available",
+    "worldCup": {
+      "brand": "Crown Sports",
+      "badge": "Crown Sports · 2026 FIFA World Cup",
+      "title": "Crown Sports World Cup Betting",
+      "subtitle": "Crown Sports · Outright winners · Live odds · Trusted",
+      "sidebarDesc": "Crown Sports — Bet on the World Cup champion with competitive odds and fast payouts.",
+      "compactDesc": "Crown Sports 2026 World Cup outright · High odds",
+      "cta": "Crown Sports · Bet Now"
+    }
   },
   "footer": {
     "description": "Professional live football scores, fixtures, standings and match data.",

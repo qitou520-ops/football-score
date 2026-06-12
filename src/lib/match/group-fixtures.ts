@@ -25,6 +25,20 @@ export function groupFixturesByLeague(fixtures: Fixture[]): LeagueGroup[] {
   }));
 }
 
+/** 按顶级联赛列表顺序排序（世界杯优先） */
+export function sortLeagueGroupsByPriority(
+  groups: LeagueGroup[],
+  priorityIds: readonly number[]
+): LeagueGroup[] {
+  const order = new Map(priorityIds.map((id, index) => [id, index]));
+  return [...groups].sort((a, b) => {
+    const ai = order.get(a.league.id) ?? 999;
+    const bi = order.get(b.league.id) ?? 999;
+    if (ai !== bi) return ai - bi;
+    return a.league.name.localeCompare(b.league.name, "en");
+  });
+}
+
 export function sortLiveFirst(fixtures: Fixture[]): Fixture[] {
   return [...fixtures].sort((a, b) => {
     const liveOrder = (s: string) =>

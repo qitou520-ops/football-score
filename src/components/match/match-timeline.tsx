@@ -1,5 +1,5 @@
 import type { MatchEvent } from "@/lib/api-football/types";
-import { translateTeamName } from "@/lib/translations";
+import { translatePlayerName, translateTeamName } from "@/lib/translations/client";
 import { cn } from "@/lib/utils";
 
 interface MatchTimelineProps {
@@ -40,9 +40,13 @@ export function MatchTimeline({ events, emptyText = "暂无比赛事件" }: Matc
           </span>
           <span className="text-base">{EVENT_ICONS[event.type] || EVENT_ICONS[event.detail] || "•"}</span>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{event.player.name}</p>
+            <p className="text-sm font-medium truncate">
+              {translatePlayerName(event.player.id, event.player.name)}
+            </p>
             {event.assist.name && (
-              <p className="text-xs text-muted-foreground">助攻：{event.assist.name}</p>
+              <p className="text-xs text-muted-foreground">
+                助攻：{translatePlayerName(event.assist.id ?? undefined, event.assist.name)}
+              </p>
             )}
           </div>
           <span className="text-xs text-muted-foreground truncate max-w-[80px]">

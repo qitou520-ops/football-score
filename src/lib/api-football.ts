@@ -30,6 +30,11 @@ export class ApiFootballError extends Error {
   }
 }
 
+/** 免费套餐赛季/日期越界时 API 返回的提示 */
+function isPlanLimitError(message: string): boolean {
+  return /free plans do not have access/i.test(message);
+}
+
 /** 统一 API 请求方法（内存/Redis 缓存 + Next.js fetch 缓存 + 并发去重） */
 export async function apiFootballRequest<T>(
   endpoint: string,
@@ -112,10 +117,13 @@ async function executeRequest<T>(
         : String(data.errors);
     void logApiRequest({
       endpoint,
-      statusCode: 400,
+      statusCode: isPlanLimitError(msg) ? 403 : 400,
       durationMs: Date.now() - started,
       error: msg,
     });
+    if (isPlanLimitError(msg)) {
+      return [] as T;
+    }
     throw new ApiFootballError(msg || "API 返回错误", 400);
   }
 
@@ -316,6 +324,32 @@ export async function searchPlayers(
     "/players",
     { search: query, season },
     `search:players:${query}:${season}`,
+    CACHE_TTL.PLAYER
+  );
+}
+
+/** 联赛参赛球队 */
+export async function getLeagueTeams(
+  leagueId: number,
+  season: number
+): Promise<TeamDetail[]> {
+  return apiFootballRequest<TeamDetail[]>(
+    "/teams",
+    { league: leagueId, season },
+    `teams:league:${leagueId}:${season}`,
+    CACHE_TTL.TEAM
+  );
+}
+
+/** 联赛射手榜 */
+export async function getTopScorers(
+  leagueId: number,
+  season: number
+): Promise<{ player: Player; statistics: unknown[] }[]> {
+  return apiFootballRequest<{ player: Player; statistics: unknown[] }[]>(
+    "/players/topscorers",
+    { league: leagueId, season },
+    `topscorers:${leagueId}:${season}`,
     CACHE_TTL.PLAYER
   );
 }

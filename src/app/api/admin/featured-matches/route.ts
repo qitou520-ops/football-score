@@ -6,12 +6,28 @@ import {
   deleteFeaturedMatch,
 } from "@/lib/cms";
 import { featuredMatchSchema } from "@/lib/admin/validation";
+import { getFixtureById } from "@/lib/data";
+import { localizeFixture } from "@/lib/translations/localize-fixture";
 
 export async function GET(request: NextRequest) {
   if (!verifyAdmin(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  return NextResponse.json(await getAllFeaturedMatches());
+  const items = await getAllFeaturedMatches();
+  const enriched = await Promise.all(
+    items.map(async (item) => {
+      const raw = await getFixtureById(item.matchId).catch(() => null);
+      const fixture = raw ? localizeFixture(raw, "zh") : null;
+      return {
+        ...item,
+        preview: fixture
+          ? `${fixture.teams.home.name} vs ${fixture.teams.away.name}`
+          : null,
+        kickoff: fixture?.fixture.date ?? null,
+      };
+    })
+  );
+  return NextResponse.json(enriched);
 }
 
 export async function POST(request: NextRequest) {

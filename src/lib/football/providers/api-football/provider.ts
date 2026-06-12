@@ -116,6 +116,16 @@ export class ApiFootballProvider implements FootballDataProvider {
     return adapter.adaptStandingRows(await api.getStandings(leagueId, season));
   }
 
+  async getLeagueTeams(leagueId: number, season = CURRENT_SEASON) {
+    const api = await client();
+    return adapter.adaptLeagueTeams(await api.getLeagueTeams(leagueId, season));
+  }
+
+  async getLeagueTopScorers(leagueId: number, season = CURRENT_SEASON) {
+    const api = await client();
+    return adapter.adaptTopScorers(await api.getTopScorers(leagueId, season));
+  }
+
   async clearCache(keys?: string[]) {
     const api = await client();
     await api.clearApiCache(keys);

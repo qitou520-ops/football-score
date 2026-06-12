@@ -1,4 +1,5 @@
 import type { PlayerSeasonStats } from "@/lib/mock/players";
+import { translateLeagueName, translateTeamName } from "@/lib/translations/client";
 import { ds } from "@/lib/design";
 
 interface Props {
@@ -7,8 +8,8 @@ interface Props {
 
 export function PlayerStatsTable({ stats }: Props) {
   const rows = [
-    { label: "联赛", value: stats.league },
-    { label: "球队", value: stats.team },
+    { label: "联赛", value: translateLeagueName(undefined, stats.league) },
+    { label: "球队", value: translateTeamName(undefined, stats.team) },
     { label: "出场", value: String(stats.appearances) },
     { label: "进球", value: String(stats.goals) },
     { label: "助攻", value: String(stats.assists) },

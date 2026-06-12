@@ -106,6 +106,22 @@ export interface FixtureLineup {
   substitutes: { player: { id: number; name: string; number: number; pos: string; grid: string | null } }[];
 }
 
+export interface LeagueTeamItem {
+  id: number;
+  name: string;
+  logo: string;
+  country: string;
+}
+
+export interface LeagueTopScorer {
+  player: Player;
+  team: TeamInfo;
+  goals: number;
+  assists: number;
+  appearances: number;
+  penalties: number;
+}
+
 export interface PlayerSeasonStats {
   appearances: number;
   goals: number;

@@ -20,7 +20,7 @@ export default async function LivePage({ params }: Props) {
 
   return (
     <PageShell>
-      <MatchFeed initialDate={today} />
+      <MatchFeed initialDate={today} defaultFilter="live" />
     </PageShell>
   );
 }
